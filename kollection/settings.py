@@ -46,11 +46,11 @@ THIRD_PARTY_APPS = [
 ]
 
 MY_APPS = [
-    "institution",
-    "user",
-    "work",
-    "review",
-    "feedback",
+    "institutions",
+    "users",
+    "works",
+    "reviews",
+    "feedbacks",
 ]
 
 # Application definition
