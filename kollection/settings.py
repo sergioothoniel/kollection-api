@@ -137,6 +137,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Kollection",
+    "DESCRIPTION": "collection of academic works",
+    "VERSION": "1.0.0",
+}
+
 STATIC_URL = "static/"
 
 # Default primary key field type
