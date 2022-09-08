@@ -45,6 +45,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = [
     "rest_framework",
     "drf_spectacular",
+    "rest_framework.authtoken",
 ]
 
 MY_APPS = [
@@ -135,10 +136,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(hours=12),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-}
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/

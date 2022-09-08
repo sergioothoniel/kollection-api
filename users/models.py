@@ -31,7 +31,7 @@ class User(AbstractUser):
         "role",
     ]
 
-    institutions = models.ForeignKey(
+    institution = models.ForeignKey(
         "institutions.Institution",
         null=True,
         blank=True,
