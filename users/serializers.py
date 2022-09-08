@@ -3,6 +3,8 @@ from .models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.hashers import make_password
 
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 
 class SerializerUsers(serializers.ModelSerializer):
 
@@ -55,3 +57,13 @@ class SerializerUsers(serializers.ModelSerializer):
             setattr(instance, key, value)
         instance.save()
         return instance
+
+
+class SerializerLoginJwt(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user: User):
+        token = super().get_token(user)
+        token["role"] = user.role
+        token["full_name"] = user.full_name
+
+        return token
