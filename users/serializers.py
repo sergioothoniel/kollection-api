@@ -64,6 +64,5 @@ class SerializerLoginJwt(TokenObtainPairSerializer):
     def get_token(cls, user: User):
         token = super().get_token(user)
         token["role"] = user.role
-        token["full_name"] = user.full_name
 
         return token

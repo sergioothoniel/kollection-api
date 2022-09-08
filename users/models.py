@@ -33,7 +33,8 @@ class User(AbstractUser):
 
     institutions = models.ForeignKey(
         "institutions.Institution",
-        default="not informed",
+        null=True,
+        blank=True,
         on_delete=models.CASCADE,
         related_name="users",
     )

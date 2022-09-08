@@ -50,8 +50,8 @@ THIRD_PARTY_APPS = [
 MY_APPS = [
     "institutions",
     "users",
-    #"works",
-   # "reviews",
+    "works",
+    # "reviews",
     "feedbacks",
 ]
 
@@ -142,6 +142,8 @@ SIMPLE_JWT = {
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+
+AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
