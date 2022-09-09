@@ -7,7 +7,9 @@ class Review(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     comments = models.TextField()
 
-    user = models.OneToOneField("users.User", on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        "users.User", on_delete=models.CASCADE, related_name="reviews"
+    )
     works = models.ForeignKey(
         "works.Work", on_delete=models.CASCADE, related_name="reviews"
     )
