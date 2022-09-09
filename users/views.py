@@ -25,7 +25,13 @@ class UsersViews(UsersSerializersMixin, generics.ListCreateAPIView):
     }
 
     def perform_create(self, serializer):
-        serializer.save(institution_id=self.request.data["institution"])
+
+        try:
+            institution_id = self.request.data["institution"]
+            if institution_id:
+                serializer.save(institution_id=institution_id)
+        except:
+            serializer.save()
 
 
 class LoginView(ObtainAuthToken):
@@ -54,7 +60,12 @@ class UserDetailsView(generics.RetrieveUpdateAPIView):
     lookup_url_kwarg = "user_id"
 
     def perform_update(self, serializer):
-        serializer.save(institution_id=self.request.data["institution"])
+        try:
+            institution_id = self.request.data["institution"]
+            if institution_id:
+                serializer.save(institution_id=institution_id)
+        except:
+            serializer.save()
 
 
 class AdminDetailsView(generics.UpdateAPIView):
@@ -68,4 +79,9 @@ class AdminDetailsView(generics.UpdateAPIView):
     lookup_url_kwarg = "user_id"
 
     def perform_update(self, serializer):
-        serializer.save(institution_id=self.request.data["institution"])
+        try:
+            institution_id = self.request.data["institution"]
+            if institution_id:
+                serializer.save(institution_id=institution_id)
+        except:
+            serializer.save()
