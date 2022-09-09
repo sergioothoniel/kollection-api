@@ -2,11 +2,21 @@ from rest_framework.views import APIView, Request, Response, status
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
 from institutions.models import Institution
+from rest_framework.authentication import TokenAuthentication
+
+from institutions.permissions import InstitutionCustomPermission
 
 from institutions.serializers import InstitutionCreateUpdateSerializer, InstitutionSerializer
 
 
+
 class InstitutionView(APIView):
+    queryset = Institution.objects.all()
+    serializer_class = InstitutionCreateUpdateSerializer
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [InstitutionCustomPermission]
+    
     def post(self, request: Request):
         serializer = InstitutionCreateUpdateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -33,6 +43,12 @@ class InstitutionView(APIView):
 
 
 class InstitutionDetailView(APIView):
+    queryset = Institution.objects.all()
+    serializer_class = InstitutionCreateUpdateSerializer
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [InstitutionCustomPermission]
+
     def patch(self, request: Request, institution_id):
         institution = get_object_or_404(Institution, id=institution_id)
 
