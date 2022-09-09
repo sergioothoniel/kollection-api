@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
+from datetime import timedelta
+
 import dotenv
 
 dotenv.load_dotenv()
@@ -38,20 +40,19 @@ DJANGO_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "rest_framework",
-    "institutions",
 ]
 
 THIRD_PARTY_APPS = [
     "rest_framework",
     "drf_spectacular",
+    "rest_framework.authtoken",
 ]
 
 MY_APPS = [
     "institutions",
     "users",
     "works",
-    "reviews",
+    # "reviews",
     "feedbacks",
 ]
 
@@ -138,6 +139,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+
+AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",

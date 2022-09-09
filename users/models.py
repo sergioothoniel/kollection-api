@@ -31,9 +31,10 @@ class User(AbstractUser):
         "role",
     ]
 
-    institutions = models.ForeignKey(
+    institution = models.ForeignKey(
         "institutions.Institution",
-        default="not informed",
+        null=True,
+        blank=True,
         on_delete=models.CASCADE,
         related_name="users",
     )
