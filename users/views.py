@@ -1,20 +1,18 @@
-from rest_framework import generics
+from calendar import c
 
+import ipdb
+from institutions.models import Institution
+from rest_framework import generics
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
-from rest_framework.views import Request, Response, status
-from rest_framework.authentication import TokenAuthentication
-
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.authentication import TokenAuthentication
-
-from institutions.models import Institution
-from .permissions import AdminPermissions, DetailsUserPermissions
-
-from .serializers import SerializerUsers, UserAdminUpdateSerializer, SerializerGetUsers
-from .models import User
-
+from rest_framework.views import Request, Response, status
 from utils.mixins import UsersSerializersMixin
+
+from .models import User
+from .permissions import AdminPermissions, DetailsUserPermissions
+from .serializers import SerializerGetUsers, SerializerUsers, UserAdminUpdateSerializer
 
 
 class UsersViews(UsersSerializersMixin, generics.ListCreateAPIView):
