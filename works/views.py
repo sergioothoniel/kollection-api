@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework import generics
 
-# Create your views here.
+from .serializers import WorkSerializer
+from .models import Work
+
+
+class WorksViews(generics.ListCreateAPIView):
+    queryset = Work.objects.all()
+    serializer_class = WorkSerializer

@@ -11,7 +11,7 @@ class Work(models.Model):
     id = models.UUIDField(default=uuid.uuid4, primary_key=True, editable=False)
     knowledge_area = models.CharField(max_length=50)
     title = models.CharField(max_length=50)
-    summary = models.TextField()
+    summary = models.TextField(null=True)
     link = models.CharField(max_length=200)
     visibility = models.CharField(
         max_length=15,
@@ -23,5 +23,5 @@ class Work(models.Model):
     #   feedbacks FK
     #   owner FK
     is_active = models.BooleanField(default=True)
-    created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
