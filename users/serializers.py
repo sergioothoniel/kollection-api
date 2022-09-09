@@ -1,14 +1,42 @@
 from rest_framework import serializers
+
 from .models import User
 from rest_framework.validators import UniqueValidator
 from django.contrib.auth.hashers import make_password
 
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from institutions.serializers import InstitutionSerializer
+
+
+
+class SerializerGetUsers(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField()
+    institution = InstitutionSerializer(read_only=True)
+
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "username",
+            "full_name",
+            "degree",
+            "about",
+            "role",
+            "is_active",
+            "institution",
+        ]
+        read_only_fields = [
+            "is_active",
+            "role",
+        ]
+
+    def get_full_name(self, obj: User) -> str:
+        return f"{obj.first_name} {obj.last_name}"
 
 
 class SerializerUsers(serializers.ModelSerializer):
 
     full_name = serializers.SerializerMethodField()
+    institution = InstitutionSerializer(read_only=True)
 
     class Meta:
         model = User
@@ -25,7 +53,14 @@ class SerializerUsers(serializers.ModelSerializer):
             "role",
             "date_joined",
             "is_active",
+            "institution",
         ]
+
+        read_only_fields = [
+            "is_active",
+            "role",
+        ]
+
         extra_kwargs = {
             "username": {
                 "validators": [
@@ -59,11 +94,37 @@ class SerializerUsers(serializers.ModelSerializer):
         return instance
 
 
-class SerializerLoginJwt(TokenObtainPairSerializer):
-    @classmethod
-    def get_token(cls, user: User):
-        token = super().get_token(user)
-        token["role"] = user.role
-        token["full_name"] = user.full_name
+class UserAdminUpdateSerializer(serializers.ModelSerializer):
+    full_name = serializers.SerializerMethodField()
+    institution = InstitutionSerializer(read_only=True)
 
-        return token
+    class Meta:
+        model = User
+        fields = [
+            "id",
+            "username",
+            "email",
+            "first_name",
+            "last_name",
+            "full_name",
+            "degree",
+            "about",
+            "role",
+            "date_joined",
+            "is_active",
+            "institution",
+        ]
+
+        extra_kwargs = {
+            "username": {
+                "validators": [
+                    UniqueValidator(
+                        queryset=User.objects.all(),
+                        message="Username already exists",
+                    )
+                ]
+            },
+        }
+
+    def get_full_name(self, obj: User) -> str:
+        return f"{obj.first_name} {obj.last_name}"
