@@ -23,11 +23,11 @@ class UsersViews(UsersSerializersMixin, generics.ListCreateAPIView):
     }
 
     def perform_create(self, serializer):
+
         try:
             institution_id = self.request.data["institution"]
             if institution_id:
                 serializer.save(institution_id=institution_id)
-
         except:
             serializer.save()
 
@@ -62,7 +62,6 @@ class UserDetailsView(generics.RetrieveUpdateAPIView):
             institution_id = self.request.data["institution"]
             if institution_id:
                 serializer.save(institution_id=institution_id)
-
         except:
             serializer.save()
 
@@ -82,6 +81,5 @@ class AdminDetailsView(generics.UpdateAPIView):
             institution_id = self.request.data["institution"]
             if institution_id:
                 serializer.save(institution_id=institution_id)
-
         except:
             serializer.save()

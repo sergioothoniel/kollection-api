@@ -1,6 +1,4 @@
-import ipdb
 from rest_framework import permissions
-from rest_framework.views import Request, View
 
 
 class ReviewViewPermission(permissions.BasePermission):
