@@ -21,7 +21,6 @@ class Work(models.Model):
     is_reviewed = models.BooleanField(default=False)
     #   reviews FK
     #   feedbacks FK
-    #   owner FK
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
