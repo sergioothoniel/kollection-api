@@ -1,16 +1,13 @@
-import ipdb
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from users.serializers import SerializerGetUsers
 from works.models import Work
-from works.serializers import WorkSerializer
 
 from .models import Review
 
 
 class ReviewSerializer(serializers.ModelSerializer):
     user = SerializerGetUsers(read_only=True)
-    works = WorkSerializer(read_only=True)
 
     class Meta:
         model = Review
@@ -21,6 +18,7 @@ class ReviewSerializer(serializers.ModelSerializer):
             "works",
         ]
         read_only_fields = ["user", "works"]
+        depth = 1
 
     def create(self, validated_data):
         work_id = self.context["view"].kwargs["work_id"]
