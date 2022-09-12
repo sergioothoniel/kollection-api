@@ -1,12 +1,13 @@
-from django.db import models
-from django.contrib.auth.models import AbstractUser
 import uuid
+
+from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 
 class Roles(models.TextChoices):
-    STUDENT = "Student"
+    REGULAR = "Regular"
     ADMIN = "Admin"
-    PROFESSOR = "Professor"
+    REVIEWER = "Reviewer"
 
 
 class User(AbstractUser):
@@ -16,19 +17,18 @@ class User(AbstractUser):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     is_active = models.BooleanField(default=True)
-    degree = models.CharField(max_length=50)
-    about = models.TextField()
+    degree = models.CharField(max_length=50, null=True, blank=True)
+    about = models.TextField(null=True, blank=True)
     role = models.CharField(
         max_length=15,
         choices=Roles.choices,
-        default=Roles.STUDENT,
+        default=Roles.REGULAR,
     )
     updated_at = models.DateTimeField(auto_now=True)
 
     REQUIRED_FIELDS = [
         "first_name",
         "last_name",
-        "role",
     ]
 
     institution = models.ForeignKey(
