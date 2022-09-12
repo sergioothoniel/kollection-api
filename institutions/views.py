@@ -1,12 +1,23 @@
 from rest_framework.views import APIView, Request, Response, status
-from rest_framework import generics
 from django.shortcuts import get_object_or_404
 from institutions.models import Institution
+from rest_framework.authentication import TokenAuthentication
 
-from institutions.serializers import InstitutionCreateUpdateSerializer, InstitutionSerializer
+from institutions.permissions import InstitutionCustomPermission
+
+from institutions.serializers import (
+    InstitutionCreateUpdateSerializer,
+    InstitutionSerializer,
+)
 
 
 class InstitutionView(APIView):
+    queryset = Institution.objects.all()
+    serializer_class = InstitutionCreateUpdateSerializer
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [InstitutionCustomPermission]
+
     def post(self, request: Request):
         serializer = InstitutionCreateUpdateSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -14,35 +25,33 @@ class InstitutionView(APIView):
         serializer.save()
 
         return Response(serializer.data, status.HTTP_201_CREATED)
-        
 
     def get(self, request):
         institutions = Institution.objects.all()
 
-        serializer = InstitutionSerializer(institutions, many=True)        
+        serializer = InstitutionSerializer(institutions, many=True)
 
         return Response(serializer.data)
 
 
-
-# class InstitutionRetrieveDeleteView(generics.RetrieveDestroyAPIView):
-#     queryset = Institution.objects.all()
-#     serializer_class = InstitutionSerializer
-#     lookup_url_kwarg = 'institution_id'
-
-
-
 class InstitutionDetailView(APIView):
+    queryset = Institution.objects.all()
+    serializer_class = InstitutionCreateUpdateSerializer
+
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [InstitutionCustomPermission]
+
     def patch(self, request: Request, institution_id):
         institution = get_object_or_404(Institution, id=institution_id)
 
-        serializer = InstitutionCreateUpdateSerializer(institution, request.data, partial=True)
+        serializer = InstitutionCreateUpdateSerializer(
+            institution, request.data, partial=True
+        )
         serializer.is_valid(raise_exception=True)
         serializer.save()
 
         return Response(serializer.data)
 
-    
     def get(self, request, institution_id):
         institution = get_object_or_404(Institution, id=institution_id)
 
@@ -50,13 +59,9 @@ class InstitutionDetailView(APIView):
 
         return Response(serializer.data)
 
-    
     def delete(self, request, institution_id):
         institution = get_object_or_404(Institution, id=institution_id)
 
         institution.delete()
 
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-
