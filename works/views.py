@@ -2,8 +2,8 @@ from rest_framework import generics
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from django_filters import rest_framework as filters
-
 from works.filters import WorkFilter
+
 
 from .models import Work
 from .permissions import IsWorkOwnerOrInternOrReadOnly, WorkViewPermission
