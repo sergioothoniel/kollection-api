@@ -1,10 +1,12 @@
 import ipdb
+
+from django.db import IntegrityError
+
 from django.test import TestCase
 from institutions.models import Institution
 from users.models import User
 
 from model_bakery import baker
-import ipdb
 
 
 class InstitutionTestModel(TestCase):
@@ -24,3 +26,4 @@ class InstitutionTestModel(TestCase):
         self.assertEqual(self.institution_info.city, "Curitiba")
         self.assertEqual(self.institution_info.phone, "4199999999")
         self.assertEqual(self.institution_info.cep, "81400000")
+
