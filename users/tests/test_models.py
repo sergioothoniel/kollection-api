@@ -2,13 +2,18 @@ import ipdb
 from django.db import IntegrityError
 from django.test import TestCase
 from institutions.models import Institution
+
 from django.urls import reverse
+
 from users.models import User
+from .mock import superuser, manager, reviewer_user, institution, student
+
 from model_bakery import baker
 class UserModelTest(TestCase):
     
     @classmethod
     def setUp(cls):
+
         cls.user = baker.make_recipe('users.create_user')
     def test_student_max_length_attributes(self):
         max_length_username = self.user._meta.get_field("username").max_length
@@ -18,3 +23,5 @@ class UserModelTest(TestCase):
         self.assertEqual(max_length_first_name, 50)
         self.assertEqual(max_length_last_name, 50)
     
+
+      

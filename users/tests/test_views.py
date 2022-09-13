@@ -102,3 +102,4 @@ class UserTestView(APITestCase):
 
         self.assertEqual(expected_status_code, result_response_status)
         self.assertEqual(response.data["role"], "Admin")
+
