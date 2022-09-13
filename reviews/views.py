@@ -12,6 +12,9 @@ class ReviewView(generics.ListAPIView):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
 
+    def get_queryset(self):
+        return self.queryset.order_by("created_at")
+
 
 class ReviewDetailView(generics.CreateAPIView):
 
