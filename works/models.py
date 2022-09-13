@@ -19,6 +19,7 @@ class Work(models.Model):
         default=Visibilities.INTERN,
     )
     is_reviewed = models.BooleanField(default=False)
+
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -7,7 +7,6 @@ from django.contrib.auth.hashers import make_password
 from institutions.serializers import InstitutionSerializer
 
 
-
 class SerializerGetUsers(serializers.ModelSerializer):
     full_name = serializers.SerializerMethodField()
     institution = InstitutionSerializer(read_only=True)
