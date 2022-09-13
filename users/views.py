@@ -1,3 +1,5 @@
+import ipdb
+from django.shortcuts import get_object_or_404
 from institutions.models import Institution
 from rest_framework import generics
 from rest_framework.authentication import TokenAuthentication
@@ -21,12 +23,15 @@ class UsersViews(SerializersMixin, generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
 
-        try:
-            institution_id = self.request.data["institution"]
-            if institution_id:
-                serializer.save(institution_id=institution_id)
-        except:
+        get_institution = self.request.data.get("institution")
+
+        if get_institution == "" or not get_institution:
             serializer.save()
+        else:
+            institution = get_object_or_404(
+                Institution, id=self.request.data["institution"]
+            )
+            serializer.save(institution=institution)
 
 
 class LoginView(ObtainAuthToken):
