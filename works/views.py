@@ -1,11 +1,10 @@
-from urllib import request
 from rest_framework import generics
-
-from .serializers import WorkSerializer
-from .models import Work
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+
+from .models import Work
 from .permissions import IsWorkOwnerOrInternOrReadOnly, WorkViewPermission
+from .serializers import WorkSerializer
 
 
 class WorksViews(generics.ListCreateAPIView):
@@ -15,12 +14,9 @@ class WorksViews(generics.ListCreateAPIView):
     serializer_class = WorkSerializer
 
     def get_queryset(self):
-        # user = self.context["user"]
-
-        import ipdb
 
         works = Work.objects.all()
-        # ipdb.set_trace()
+
         if self.request.user.is_authenticated:
             queryset = [
                 work_dict
