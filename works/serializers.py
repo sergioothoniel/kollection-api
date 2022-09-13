@@ -2,6 +2,7 @@ from asyncore import read
 from rest_framework import serializers
 from reviews.serializers import ReviewSerializer
 from users.serializers import SerializerUsers
+from feedbacks.serializers import FeedbackSerializer
 import ipdb
 
 from .models import Work
@@ -11,12 +12,19 @@ class WorkSerializer(serializers.ModelSerializer):
 
     reviews = ReviewSerializer(many=True, read_only=True)
     users = SerializerUsers(many=True, read_only=True)
-    # feedback =
+    feedbacks = FeedbackSerializer(many=True, read_only=True)
 
     class Meta:
         model = Work
         fields = "__all__"
-        read_only_fields = ["id", "created_at", "updated_at", "reviews", "users"]
+        read_only_fields = [
+            "id",
+            "created_at",
+            "updated_at",
+            "reviews",
+            "users",
+            "feedbacks",
+        ]
 
     def create(self, validated_data: dict) -> Work:
         user_institution = self.context["request"].user.institution
