@@ -1,4 +1,3 @@
-import ipdb
 from django.shortcuts import get_object_or_404
 from institutions.models import Institution
 from rest_framework import generics

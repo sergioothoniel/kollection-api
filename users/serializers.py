@@ -1,4 +1,3 @@
-import ipdb
 from django.contrib.auth.hashers import make_password
 from institutions.serializers import InstitutionSerializer
 from rest_framework import serializers
@@ -74,7 +73,7 @@ class SerializerUsers(serializers.ModelSerializer):
         }
 
     def create(self, validated_data: dict) -> User:
-        # ipdb.set_trace()
+
         if validated_data.get("institution") == "":
             validated_data.pop("institution")
         new_user = User.objects.create_user(**validated_data)
@@ -94,12 +93,7 @@ class SerializerUsers(serializers.ModelSerializer):
         return instance
 
     def get_full_name(self, obj: User) -> str:
-        # ipdb.set_trace()
-        # if obj["institution"]:
-        #     return f"{obj.first_name} {obj.last_name}"
 
-        # first_name = obj["first_name"]
-        # last_name = obj["last_name"]
         return f"{obj.first_name} {obj.last_name}"
 
 

@@ -1,6 +1,4 @@
-from ast import Return
 from rest_framework import permissions
-import ipdb
 
 from works.models import Work
 
@@ -16,7 +14,7 @@ class WorkViewPermission(permissions.BasePermission):
 
 class IsWorkOwnerOrInternOrReadOnly(permissions.BasePermission):
     def has_object_permission(self, request, view, work: Work):
-        # ipdb.set_trace()
+
         if request.method in permissions.SAFE_METHODS:
             if work.visibility == "Public":
                 return True
