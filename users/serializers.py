@@ -1,11 +1,9 @@
+from django.contrib.auth.hashers import make_password
+from institutions.serializers import InstitutionSerializer
 from rest_framework import serializers
+from rest_framework.validators import UniqueValidator
 
 from .models import User
-from rest_framework.validators import UniqueValidator
-from django.contrib.auth.hashers import make_password
-
-from institutions.serializers import InstitutionSerializer
-
 
 
 class SerializerGetUsers(serializers.ModelSerializer):
@@ -30,6 +28,7 @@ class SerializerGetUsers(serializers.ModelSerializer):
         ]
 
     def get_full_name(self, obj: User) -> str:
+
         return f"{obj.first_name} {obj.last_name}"
 
 
@@ -73,10 +72,10 @@ class SerializerUsers(serializers.ModelSerializer):
             "password": {"write_only": True},
         }
 
-    def get_full_name(self, obj: User) -> str:
-        return f"{obj.first_name} {obj.last_name}"
-
     def create(self, validated_data: dict) -> User:
+
+        if validated_data.get("institution") == "":
+            validated_data.pop("institution")
         new_user = User.objects.create_user(**validated_data)
 
         new_user.save()
@@ -92,6 +91,10 @@ class SerializerUsers(serializers.ModelSerializer):
             setattr(instance, key, value)
         instance.save()
         return instance
+
+    def get_full_name(self, obj: User) -> str:
+
+        return f"{obj.first_name} {obj.last_name}"
 
 
 class UserAdminUpdateSerializer(serializers.ModelSerializer):

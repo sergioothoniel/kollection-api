@@ -16,4 +16,7 @@ class DetailsUserPermissions(permissions.BasePermission):
 class AdminPermissions(permissions.BasePermission):
     def has_object_permission(self, request: Request, view: View, user: User):
 
-        return request.user.is_superuser or request.user.role == "Admin"
+        return request.user.is_superuser or (
+            request.user.role == "Admin"
+            and request.user.institution == user.institution
+        )

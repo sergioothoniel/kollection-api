@@ -1,6 +1,4 @@
-from calendar import c
-
-import ipdb
+from django.shortcuts import get_object_or_404
 from institutions.models import Institution
 from rest_framework import generics
 from rest_framework.authentication import TokenAuthentication
@@ -8,14 +6,14 @@ from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import Request, Response, status
-from utils.mixins import UsersSerializersMixin
+from utils.mixins import SerializersMixin
 
 from .models import User
 from .permissions import AdminPermissions, DetailsUserPermissions
 from .serializers import SerializerGetUsers, SerializerUsers, UserAdminUpdateSerializer
 
 
-class UsersViews(UsersSerializersMixin, generics.ListCreateAPIView):
+class UsersViews(SerializersMixin, generics.ListCreateAPIView):
     queryset = User.objects.all()
     serializer_map = {
         "GET": SerializerGetUsers,
@@ -24,12 +22,15 @@ class UsersViews(UsersSerializersMixin, generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
 
-        try:
-            institution_id = self.request.data["institution"]
-            if institution_id:
-                serializer.save(institution_id=institution_id)
-        except:
+        get_institution = self.request.data.get("institution")
+
+        if get_institution == "" or not get_institution:
             serializer.save()
+        else:
+            institution = get_object_or_404(
+                Institution, id=self.request.data["institution"]
+            )
+            serializer.save(institution=institution)
 
 
 class LoginView(ObtainAuthToken):
