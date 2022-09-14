@@ -38,18 +38,7 @@ class InstitutionTestView(APITestCase):
             **cls.institution_data_update, infos_id=cls.institution_info.id
         )
 
-        normal_user_data = {
-            "username": fake.name(),
-            "email": fake.email(),
-            "first_name": fake.name(),
-            "last_name": fake.name(),
-            "password": fake.password(),
-            "degree": "None",
-            "about": "None",
-        }
-
-        normal_user = User.objects.create_user(**normal_user_data)
-        cls.token_normal_user = Token.objects.create(user=normal_user)
+       
 
         super_user_data = {
             "username": fake.name(),
