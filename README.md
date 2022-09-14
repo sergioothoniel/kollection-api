@@ -1,18 +1,30 @@
-# kollection-api
+### Kollection API
+API para organização de trabalhos acadêmicos
 
-# Postgres
+## Review
+A kollection API foi feita no intuito de ajudar e organizar um acervo de trabalhos acadêmicos, com suas devidas classificações de professores e alunos cadastrados na aplicação
 
-- psql
-- CREATE DATABASE nome;
+## Documentação
 
-# DER
+A sua documentação está disponível aqui :  !
 
-https://dbdiagram.io/d/630541f6f1a9b01b0fccbed4
 
-# Trello
+## Features da API
 
-https://trello.com/b/1fdwQI7U/capstone-m5
-
-# GITHUB
-
-https://github.com/danilovalerio89/kollection-api
+ - Cadastro de Usuário
+ - Registro de Instituição
+ - Cadastro de Trabalho Acadêmico
+ - Cadastro de Feedback sobre o referente trabalho realizado
+ 
+ 
+ Em todas essas features é possível com autenticação do sistema , criar , atualizar, listar, e deletar dados.
+ 
+ 
+ ## Tecnologias Utilizadas 
+ 
+  -  Python 
+  -  Django
+  -  PostgreSQL
+  -  Heroku
+  -  Testes de models e views em Python
+  -  AuthToken
