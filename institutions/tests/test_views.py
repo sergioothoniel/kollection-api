@@ -4,7 +4,7 @@ from rest_framework.views import Response, status
 from institutions.models import Institution, InstitutionInfo
 from users.models import User
 from rest_framework.authtoken.models import Token
-import ipdb
+
 from faker import Faker
 
 fake = Faker()
