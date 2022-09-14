@@ -1,0 +1,1656 @@
+openapi: 3.0.3
+info:
+  title: Kollection
+  version: 1.0.0
+  description: collection of academic works
+paths:
+  /api/institutions/:
+    get:
+      operationId: api_institutions_retrieve
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstitutionCreateUpdate'
+          description: ''
+    post:
+      operationId: api_institutions_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstitutionCreateUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/InstitutionCreateUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/InstitutionCreateUpdate'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstitutionCreateUpdate'
+          description: ''
+  /api/institutions/{institution_id}/:
+    get:
+      operationId: api_institutions_retrieve_2
+      parameters:
+      - in: path
+        name: institution_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstitutionCreateUpdate'
+          description: ''
+    patch:
+      operationId: api_institutions_partial_update
+      parameters:
+      - in: path
+        name: institution_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedInstitutionCreateUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedInstitutionCreateUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedInstitutionCreateUpdate'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstitutionCreateUpdate'
+          description: ''
+    delete:
+      operationId: api_institutions_destroy
+      parameters:
+      - in: path
+        name: institution_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/login/:
+    post:
+      operationId: api_login_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthToken'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthToken'
+          description: ''
+  /api/reviews/:
+    get:
+      operationId: api_reviews_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedReviewList'
+          description: ''
+  /api/reviews/{review_id}/user/:
+    get:
+      operationId: api_reviews_user_retrieve
+      parameters:
+      - in: path
+        name: review_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+          description: ''
+    put:
+      operationId: api_reviews_user_update
+      parameters:
+      - in: path
+        name: review_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Review'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Review'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+          description: ''
+    patch:
+      operationId: api_reviews_user_partial_update
+      parameters:
+      - in: path
+        name: review_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedReview'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedReview'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedReview'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+          description: ''
+    delete:
+      operationId: api_reviews_user_destroy
+      parameters:
+      - in: path
+        name: review_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/reviews/{work_id}/:
+    post:
+      operationId: api_reviews_create
+      parameters:
+      - in: path
+        name: work_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Review'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Review'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+          description: ''
+  /api/users/:
+    get:
+      operationId: api_users_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSerializerGetUsersList'
+          description: ''
+    post:
+      operationId: api_users_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SerializerUsers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SerializerUsers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SerializerUsers'
+        required: true
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerializerUsers'
+          description: ''
+  /api/users/{user_id}/:
+    get:
+      operationId: api_users_retrieve
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerializerUsers'
+          description: ''
+    put:
+      operationId: api_users_update
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SerializerUsers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SerializerUsers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SerializerUsers'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerializerUsers'
+          description: ''
+    patch:
+      operationId: api_users_partial_update
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSerializerUsers'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSerializerUsers'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSerializerUsers'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SerializerUsers'
+          description: ''
+  /api/users/{user_id}/admin/:
+    put:
+      operationId: api_users_admin_update
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserAdminUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserAdminUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserAdminUpdate'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAdminUpdate'
+          description: ''
+    patch:
+      operationId: api_users_admin_partial_update
+      parameters:
+      - in: path
+        name: user_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserAdminUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserAdminUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserAdminUpdate'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserAdminUpdate'
+          description: ''
+  /api/works/:
+    get:
+      operationId: api_works_list
+      parameters:
+      - in: query
+        name: area
+        schema:
+          type: string
+      - in: query
+        name: is_reviewed
+        schema:
+          type: boolean
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: query
+        name: visibility
+        schema:
+          type: string
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedWorkList'
+          description: ''
+    post:
+      operationId: api_works_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Work'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Work'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Work'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Work'
+          description: ''
+  /api/works/{work_id}/:
+    get:
+      operationId: api_works_retrieve
+      parameters:
+      - in: path
+        name: work_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Work'
+          description: ''
+    put:
+      operationId: api_works_update
+      parameters:
+      - in: path
+        name: work_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Work'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Work'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Work'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Work'
+          description: ''
+    patch:
+      operationId: api_works_partial_update
+      parameters:
+      - in: path
+        name: work_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWork'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedWork'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedWork'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Work'
+          description: ''
+    delete:
+      operationId: api_works_destroy
+      parameters:
+      - in: path
+        name: work_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/works/{work_id}/feedbacks/:
+    get:
+      operationId: api_works_feedbacks_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - in: path
+        name: work_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedFeedbackList'
+          description: ''
+    post:
+      operationId: api_works_feedbacks_create
+      parameters:
+      - in: path
+        name: work_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Feedback'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Feedback'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Feedback'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+          description: ''
+  /api/works/{work_id}/feedbacks/{feedback_id}/:
+    get:
+      operationId: api_works_feedbacks_retrieve
+      parameters:
+      - in: path
+        name: feedback_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: work_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+          description: ''
+    put:
+      operationId: api_works_feedbacks_update
+      parameters:
+      - in: path
+        name: feedback_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: work_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Feedback'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Feedback'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Feedback'
+        required: true
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+          description: ''
+    patch:
+      operationId: api_works_feedbacks_partial_update
+      parameters:
+      - in: path
+        name: feedback_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: work_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedFeedback'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedFeedback'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedFeedback'
+      security:
+      - tokenAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Feedback'
+          description: ''
+    delete:
+      operationId: api_works_feedbacks_destroy
+      parameters:
+      - in: path
+        name: feedback_id
+        schema:
+          type: string
+        required: true
+      - in: path
+        name: work_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - tokenAuth: []
+      responses:
+        '204':
+          description: No response body
+  /schema/:
+    get:
+      operationId: schema_retrieve
+      description: |-
+        OpenApi3 schema for this API. Format can be selected via content negotiation.
+
+        - YAML: application/vnd.oai.openapi
+        - JSON: application/vnd.oai.openapi+json
+      parameters:
+      - in: query
+        name: format
+        schema:
+          type: string
+          enum:
+          - json
+          - yaml
+      - in: query
+        name: lang
+        schema:
+          type: string
+          enum:
+          - af
+          - ar
+          - ar-dz
+          - ast
+          - az
+          - be
+          - bg
+          - bn
+          - br
+          - bs
+          - ca
+          - cs
+          - cy
+          - da
+          - de
+          - dsb
+          - el
+          - en
+          - en-au
+          - en-gb
+          - eo
+          - es
+          - es-ar
+          - es-co
+          - es-mx
+          - es-ni
+          - es-ve
+          - et
+          - eu
+          - fa
+          - fi
+          - fr
+          - fy
+          - ga
+          - gd
+          - gl
+          - he
+          - hi
+          - hr
+          - hsb
+          - hu
+          - hy
+          - ia
+          - id
+          - ig
+          - io
+          - is
+          - it
+          - ja
+          - ka
+          - kab
+          - kk
+          - km
+          - kn
+          - ko
+          - ky
+          - lb
+          - lt
+          - lv
+          - mk
+          - ml
+          - mn
+          - mr
+          - ms
+          - my
+          - nb
+          - ne
+          - nl
+          - nn
+          - os
+          - pa
+          - pl
+          - pt
+          - pt-br
+          - ro
+          - ru
+          - sk
+          - sl
+          - sq
+          - sr
+          - sr-latn
+          - sv
+          - sw
+          - ta
+          - te
+          - tg
+          - th
+          - tk
+          - tr
+          - tt
+          - udm
+          - uk
+          - ur
+          - uz
+          - vi
+          - zh-hans
+          - zh-hant
+      tags:
+      - schema
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/vnd.oai.openapi:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/yaml:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/vnd.oai.openapi+json:
+              schema:
+                type: object
+                additionalProperties: {}
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+components:
+  schemas:
+    AuthToken:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        token:
+          type: string
+          readOnly: true
+      required:
+      - password
+      - token
+      - username
+    Feedback:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        feedback:
+          type: string
+          maxLength: 200
+        rate:
+          type: number
+          format: double
+        work_id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/SerializerUsers'
+          readOnly: true
+      required:
+      - feedback
+      - id
+      - rate
+      - user
+      - work_id
+    Institution:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        name:
+          type: string
+          maxLength: 225
+        infos:
+          allOf:
+          - $ref: '#/components/schemas/InstitutionInfo'
+          readOnly: true
+      required:
+      - id
+      - infos
+      - name
+    InstitutionCreateUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 225
+        city:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 80
+        state:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 80
+        link:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 250
+        phone:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 80
+        cep:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 80
+        infos:
+          allOf:
+          - $ref: '#/components/schemas/InstitutionInfo'
+          readOnly: true
+      required:
+      - infos
+      - name
+    InstitutionInfo:
+      type: object
+      properties:
+        link:
+          type: string
+          nullable: true
+          maxLength: 250
+        city:
+          type: string
+          nullable: true
+          maxLength: 80
+        state:
+          type: string
+          nullable: true
+          maxLength: 80
+        phone:
+          type: string
+          nullable: true
+          maxLength: 80
+        cep:
+          type: string
+          nullable: true
+          maxLength: 80
+    Nested:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        knowledge_area:
+          type: string
+          maxLength: 50
+        title:
+          type: string
+          maxLength: 50
+        summary:
+          type: string
+          nullable: true
+        link:
+          type: string
+          maxLength: 200
+        visibility:
+          $ref: '#/components/schemas/VisibilityEnum'
+        is_reviewed:
+          type: boolean
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - id
+      - knowledge_area
+      - link
+      - title
+      - updated_at
+    PaginatedFeedbackList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Feedback'
+    PaginatedReviewList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Review'
+    PaginatedSerializerGetUsersList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SerializerGetUsers'
+    PaginatedWorkList:
+      type: object
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Work'
+    PatchedFeedback:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        feedback:
+          type: string
+          maxLength: 200
+        rate:
+          type: number
+          format: double
+        work_id:
+          type: string
+          format: uuid
+          readOnly: true
+        user:
+          allOf:
+          - $ref: '#/components/schemas/SerializerUsers'
+          readOnly: true
+    PatchedInstitutionCreateUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 225
+        city:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 80
+        state:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 80
+        link:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 250
+        phone:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 80
+        cep:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 80
+        infos:
+          allOf:
+          - $ref: '#/components/schemas/InstitutionInfo'
+          readOnly: true
+    PatchedReview:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        comments:
+          type: string
+        user:
+          allOf:
+          - $ref: '#/components/schemas/SerializerGetUsers'
+          readOnly: true
+        works:
+          allOf:
+          - $ref: '#/components/schemas/Nested'
+          readOnly: true
+    PatchedSerializerUsers:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          maxLength: 127
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        email:
+          type: string
+          format: email
+          maxLength: 127
+        first_name:
+          type: string
+          maxLength: 50
+        last_name:
+          type: string
+          maxLength: 50
+        full_name:
+          type: string
+          readOnly: true
+        degree:
+          type: string
+          nullable: true
+          maxLength: 50
+        about:
+          type: string
+          nullable: true
+        role:
+          allOf:
+          - $ref: '#/components/schemas/RoleEnum'
+          readOnly: true
+        date_joined:
+          type: string
+          format: date-time
+        is_active:
+          type: boolean
+          readOnly: true
+        institution:
+          allOf:
+          - $ref: '#/components/schemas/Institution'
+          readOnly: true
+    PatchedUserAdminUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          maxLength: 127
+        email:
+          type: string
+          format: email
+          maxLength: 127
+        first_name:
+          type: string
+          maxLength: 50
+        last_name:
+          type: string
+          maxLength: 50
+        full_name:
+          type: string
+          readOnly: true
+        degree:
+          type: string
+          nullable: true
+          maxLength: 50
+        about:
+          type: string
+          nullable: true
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        date_joined:
+          type: string
+          format: date-time
+        is_active:
+          type: boolean
+        institution:
+          allOf:
+          - $ref: '#/components/schemas/Institution'
+          readOnly: true
+    PatchedWork:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        reviews:
+          type: array
+          items:
+            $ref: '#/components/schemas/Review'
+          readOnly: true
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/SerializerUsers'
+          readOnly: true
+        feedbacks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Feedback'
+          readOnly: true
+        knowledge_area:
+          type: string
+          maxLength: 50
+        title:
+          type: string
+          maxLength: 50
+        summary:
+          type: string
+          nullable: true
+        link:
+          type: string
+          maxLength: 200
+        visibility:
+          $ref: '#/components/schemas/VisibilityEnum'
+        is_reviewed:
+          type: boolean
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+    Review:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        comments:
+          type: string
+        user:
+          allOf:
+          - $ref: '#/components/schemas/SerializerGetUsers'
+          readOnly: true
+        works:
+          allOf:
+          - $ref: '#/components/schemas/Nested'
+          readOnly: true
+      required:
+      - comments
+      - id
+      - user
+      - works
+    RoleEnum:
+      enum:
+      - Regular
+      - Admin
+      - Reviewer
+      type: string
+    SerializerGetUsers:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          maxLength: 127
+        full_name:
+          type: string
+          readOnly: true
+        degree:
+          type: string
+          nullable: true
+          maxLength: 50
+        about:
+          type: string
+          nullable: true
+        role:
+          allOf:
+          - $ref: '#/components/schemas/RoleEnum'
+          readOnly: true
+        is_active:
+          type: boolean
+          readOnly: true
+        institution:
+          allOf:
+          - $ref: '#/components/schemas/Institution'
+          readOnly: true
+      required:
+      - full_name
+      - id
+      - institution
+      - is_active
+      - role
+      - username
+    SerializerUsers:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          maxLength: 127
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        email:
+          type: string
+          format: email
+          maxLength: 127
+        first_name:
+          type: string
+          maxLength: 50
+        last_name:
+          type: string
+          maxLength: 50
+        full_name:
+          type: string
+          readOnly: true
+        degree:
+          type: string
+          nullable: true
+          maxLength: 50
+        about:
+          type: string
+          nullable: true
+        role:
+          allOf:
+          - $ref: '#/components/schemas/RoleEnum'
+          readOnly: true
+        date_joined:
+          type: string
+          format: date-time
+        is_active:
+          type: boolean
+          readOnly: true
+        institution:
+          allOf:
+          - $ref: '#/components/schemas/Institution'
+          readOnly: true
+      required:
+      - email
+      - first_name
+      - full_name
+      - id
+      - institution
+      - is_active
+      - last_name
+      - password
+      - role
+      - username
+    UserAdminUpdate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        username:
+          type: string
+          maxLength: 127
+        email:
+          type: string
+          format: email
+          maxLength: 127
+        first_name:
+          type: string
+          maxLength: 50
+        last_name:
+          type: string
+          maxLength: 50
+        full_name:
+          type: string
+          readOnly: true
+        degree:
+          type: string
+          nullable: true
+          maxLength: 50
+        about:
+          type: string
+          nullable: true
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        date_joined:
+          type: string
+          format: date-time
+        is_active:
+          type: boolean
+        institution:
+          allOf:
+          - $ref: '#/components/schemas/Institution'
+          readOnly: true
+      required:
+      - email
+      - first_name
+      - full_name
+      - id
+      - institution
+      - last_name
+      - username
+    VisibilityEnum:
+      enum:
+      - Intern
+      - Public
+      type: string
+    Work:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        reviews:
+          type: array
+          items:
+            $ref: '#/components/schemas/Review'
+          readOnly: true
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/SerializerUsers'
+          readOnly: true
+        feedbacks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Feedback'
+          readOnly: true
+        knowledge_area:
+          type: string
+          maxLength: 50
+        title:
+          type: string
+          maxLength: 50
+        summary:
+          type: string
+          nullable: true
+        link:
+          type: string
+          maxLength: 200
+        visibility:
+          $ref: '#/components/schemas/VisibilityEnum'
+        is_reviewed:
+          type: boolean
+        is_active:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - feedbacks
+      - id
+      - knowledge_area
+      - link
+      - reviews
+      - title
+      - updated_at
+      - users
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid
+    tokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "Token"
