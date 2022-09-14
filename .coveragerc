@@ -1,0 +1,11 @@
+[run]
+source = .
+omit = 
+    venv/*
+    kollection/*
+    manage.py
+    *tests*
+    *migrations*
+
+[report]
+show_missing = True

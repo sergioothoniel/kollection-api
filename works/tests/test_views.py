@@ -1,101 +1,189 @@
-from rest_framework.test import APITestCase, APIClient
+import ipdb
 from django.urls import reverse
+from institutions.models import Institution, InstitutionInfo
+from rest_framework.test import APITestCase
 from rest_framework.views import Response, status
-from works.models import Work
 from users.models import User
-from rest_framework.authtoken.models import Token
-from faker import Faker
-
-fake = Faker()
+from works.models import Work
 
 
 class WorkTestView(APITestCase):
     @classmethod
     def setUpTestData(cls) -> None:
-        cls.client: APIClient
+        cls.base_login_url = reverse("login")
+        cls.work_post_get_url = reverse("works")
+        # cls.work_details = reverse("work_detail")
 
-        cls.work_info_data = {
-            "knowledge_area": "Tecnologia",
-            "title": "Aprenda a programar",
-            "summary": "testing",
-            "link": "http://test.com.br",
-            "visibility": "Intern",
-            "is_reviewed": True,
-            "is_active": True,
+        cls.user_regular = {
+            "username": "regular",
+            "email": "regular@email.com",
+            "password": "1234",
+            "first_name": "Regular",
+            "last_name": "Test",
         }
-        cls.work_info = Work.objects.create(**cls.work_info_data)
 
-        cls.work_data = {"name": fake.name()}
-        cls.work_data_update = {"name": fake.name()}
+        cls.user_regular_credentials = {"username": "regular", "password": "1234"}
 
-        cls.work = Work.objects.create(
-            **cls.work_data_update, infos_id=cls.work_info.id
+        cls.user_regular_data_no_institution = {
+            "username": "regularnoinstitution",
+            "email": "regularnoinstitution@email.com",
+            "password": "1234",
+            "first_name": "Regular",
+            "last_name": "Test",
+        }
+        cls.user_regular_no_institution_credentials = {
+            "username": "regularnoinstitution",
+            "password": "1234",
+        }
+
+        cls.institution_info_data = {
+            "city": "Curitiba",
+            "state": "Paraná",
+            "link": "https://kenzie.com.br/",
+            "phone": "4199999999",
+            "cep": "81400000",
+        }
+
+        cls.user_work_with_institution_data = {
+            "knowledge_area": "T.I Test",
+            "title": "My First Work",
+            "link": "Fake Link",
+        }
+
+        cls.user_work_without_institution_data = {
+            "knowledge_area": "T.I Test 2",
+            "title": "My First Work - No Institution",
+            "link": "Fake Link",
+        }
+
+        cls.institution_info = InstitutionInfo.objects.create(
+            **cls.institution_info_data
         )
 
-        normal_user_data = {
-            "username": fake.name(),
-            "email": fake.email(),
-            "first_name": fake.name(),
-            "last_name": fake.name(),
-            "password": fake.password(),
-            "degree": "None",
-            "about": "None",
-        }
+        cls.institution = Institution.objects.create(
+            name="Institution Test", infos=cls.institution_info
+        )
 
-        normal_user = User.objects.create_user(**normal_user_data)
-        cls.token_normal_user = Token.objects.create(user=normal_user)
+        cls.user_with_institution = User.objects.create_user(
+            **cls.user_regular, institution=cls.institution
+        )
 
-        cls.base_url = reverse("works")
-        cls.base_url_details = reverse("work_id", kwargs={"work_id": cls.work.id})
+        cls.user_without_institution = User.objects.create_user(
+            **cls.user_regular_data_no_institution
+        )
 
-    def test_create_work_super_user(self):
-        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_super_user.key)
+        cls.work_user_with_institution = Work.objects.create(
+            **cls.user_work_with_institution_data
+        )
 
-        create_work: Response = self.client.post(self.base_url, self.work_data)
+        cls.work_user_without_institution = Work.objects.create(
+            **cls.user_work_without_institution_data, visibility="Public"
+        )
+
+        cls.user_with_institution.works.add(cls.work_user_with_institution)
+
+        cls.user_without_institution.works.add(cls.work_user_without_institution)
+
+    def test_create_work_user_with_institution(self):
+        user_regular_response: Response = self.client.post(
+            self.base_login_url, data=self.user_regular_credentials
+        )
+        user_token = user_regular_response.data["token"]
+
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {user_token}")
+
+        create_work: Response = self.client.post(
+            self.work_post_get_url, data=self.user_work_with_institution_data
+        )
 
         code_response = status.HTTP_201_CREATED
         code_result = create_work.status_code
 
         self.assertEqual(code_response, code_result)
+        self.assertEqual(create_work.data["visibility"], "Intern")
 
-    def test_create_work_normal_user(self):
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token " + self.token_normal_user.key
+    def test_create_work_user_without_institution(self):
+        user_regular_no_institution_response: Response = self.client.post(
+            self.base_login_url, data=self.user_regular_no_institution_credentials
         )
-        create_work: Response = self.client.post(self.base_url, self.work_data)
-        code_response = status.HTTP_403_FORBIDDEN
+        user_no_institution_token = user_regular_no_institution_response.data["token"]
+
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {user_no_institution_token}")
+
+        create_work: Response = self.client.post(
+            self.work_post_get_url, data=self.user_work_without_institution_data
+        )
+
+        code_response = status.HTTP_201_CREATED
         code_result = create_work.status_code
 
         self.assertEqual(code_response, code_result)
-
-    def test_update_work_super_user(self):
-        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_super_user.key)
-
-        update: Response = self.client.patch(
-            self.base_url_details, data={"title": "Kenzie Academy"}
-        )
-        code_response = status.HTTP_200_OK
-        code_result = update.status_code
-
-        self.assertEqual(code_response, code_result)
+        self.assertEqual(create_work.data["visibility"], "Public")
 
     def test_list_works_with_normal_user(self):
-        self.client.credentials(
-            HTTP_AUTHORIZATION="Token " + self.token_normal_user.key
+        user_regular_response: Response = self.client.post(
+            self.base_login_url, data=self.user_regular_credentials
         )
+        user_token = user_regular_response.data["token"]
 
-        list_works: Response = self.client.get(self.base_url_details)
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {user_token}")
 
-        code_response = status.HTTP_403_FORBIDDEN
+        list_works: Response = self.client.get(self.work_post_get_url)
+
+        list_count = 2
+        list_response_count = list_works.data["count"]
+        code_response = status.HTTP_200_OK
         code_result = list_works.status_code
+
+        self.assertEqual(list_response_count, list_count)
+        self.assertEqual(code_response, code_result)
+
+    def test_list_works_with_normal_user_no_institution(self):
+        user_regular_response: Response = self.client.post(
+            self.base_login_url, data=self.user_regular_no_institution_credentials
+        )
+        user_token = user_regular_response.data["token"]
+
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {user_token}")
+
+        list_works: Response = self.client.get(self.work_post_get_url)
+
+        list_count = 1
+        list_response_count = list_works.data["count"]
+        code_response = status.HTTP_200_OK
+        code_result = list_works.status_code
+
+        self.assertEqual(list_response_count, list_count)
+        self.assertEqual(code_response, code_result)
+
+    def test_delete_work_owner(self):
+        delete_url = reverse("work_detail", args=[self.work_user_with_institution.id])
+        user_regular_response: Response = self.client.post(
+            self.base_login_url, data=self.user_regular_credentials
+        )
+        user_token = user_regular_response.data["token"]
+
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {user_token}")
+
+        response_delete: Response = self.client.delete(delete_url)
+
+        code_response = status.HTTP_204_NO_CONTENT
+        code_result = response_delete.status_code
 
         self.assertEqual(code_response, code_result)
 
-    def test_delete_work(self):
-        self.client.credentials(HTTP_AUTHORIZATION="Token " + self.token_super_user.key)
-        response: Response = self.client.delete(self.base_url_details)
+    def test_delete_work_not_owner(self):
+        delete_url = reverse("work_detail", args=[self.work_user_with_institution.id])
+        user_regular_response: Response = self.client.post(
+            self.base_login_url, data=self.user_regular_no_institution_credentials
+        )
+        user_token = user_regular_response.data["token"]
 
-        expected_status_code = status.HTTP_204_NO_CONTENT
-        result_status_code = response.status_code
+        self.client.credentials(HTTP_AUTHORIZATION=f"Token {user_token}")
 
-        self.assertEqual(expected_status_code, result_status_code)
+        response_delete: Response = self.client.delete(delete_url)
+
+        code_response = status.HTTP_403_FORBIDDEN
+        code_result = response_delete.status_code
+
+        self.assertEqual(code_response, code_result)
