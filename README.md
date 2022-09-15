@@ -6,7 +6,8 @@ A kollection API foi feita no intuito de ajudar e organizar um acervo de trabalh
 
 ## Documentação
 
-A sua documentação está disponível aqui :  !
+A sua documentação está disponível aqui :  https://kollection-api.herokuapp.com/api/docs/
+<p>url: https://kollection-api.herokuapp.com/api/</p>
 
 
 ## Features da API
